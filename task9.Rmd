@@ -1,0 +1,56 @@
+---
+title: "Survival"
+author: "Tusar"
+date: "2025-02-12"
+output: html_document
+---
+
+```{r setup, include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(fig.path = 'Figures/', fig.align = 'center',
+                      tidy = FALSE)
+options(replace.assign = TRUE, width = 75, keep.blank.line = FALSE, digits = 6)
+
+```
+
+
+We can create a multivariable Cox proportional hazard model with all body composition parameter and select the variable which has strongest impact on overall survival
+by using the Akaike Information Criterion (AIC) criteria. 
+```{r}
+
+library(survival)
+library(MASS)
+
+# Fit the initial model
+
+fit1 <- coxph(Surv(survivalTime, survivalStatus) ~ bone_whole_scan + muscle_whole_scan + toAdiTissue_whole_scan + itmAdiTissue_whole_scan + subAdiTissue_whole_scan + visAdiTissue_whole_scan, data = merged_data)
+
+fit1
+```
+
+Performing stepwise selection by the stepAIC function from package MASS.
+
+```{r}
+fitAIC <- stepAIC(fit1, trace = FALSE) # direction = "both",
+```
+
+Examine the summary to get the variable with the strongest impact.
+```{r}
+# The summary function provides the result in a comprehensive table.
+summary(fitAIC)
+```
+
+The bone density volume has the strongest impact on overall survival.
+
+The analysis-of-variance and analysis-of-deviance table summarizes the brief results.
+
+```{r}
+anova(fit1)
+```
+
+
+# Software
+We used the following software versions to generate this report.
+```{r, info, echo=FALSE}
+sessionInfo()
+```
+

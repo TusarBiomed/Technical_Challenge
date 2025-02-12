@@ -1,0 +1,29 @@
+---
+title: "Summarizing the distribution"
+author: "Tusar"
+date: "2025-02-12"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(fig.path = 'Figures/', fig.align = 'center',
+                      tidy = FALSE)
+options(replace.assign = TRUE, width = 75, keep.blank.line = FALSE, digits = 6)
+```
+
+
+We can summarize the distribution of all variables in the patient cohort by simple summary function.
+```{r}
+# Creating an overview table
+summary(clinicalData)
+```
+
+
+# Software
+The following software versions are used to generate this report.
+```{r, info, echo=FALSE}
+sessionInfo()
+```
+

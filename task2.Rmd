@@ -1,0 +1,61 @@
+---
+title: "Missing data"
+author: "Tusar"
+date: "2025-02-12"
+output: html_document
+---
+
+```{r setup, include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(fig.path = 'Figures/', fig.align = 'center',
+                      tidy = FALSE)
+options(replace.assign = TRUE, width = 75, keep.blank.line = FALSE, digits = 6)
+```
+
+
+At first, we load all necessary libraries.
+```{r}
+library(dplyr)
+library(tidyr)
+library(kableExtra)
+
+```
+
+Here, we create a function which can calculate the total number and percentage of missing for all variables.
+
+
+```{r}
+missing_func <- function(df) {
+  df %>%
+    summarise(across(everything(), ~ sum(is.na(.)), .names = "{.col}")) %>%
+    pivot_longer(cols = everything(), names_to = "Variable", values_to = "total_Missing") %>%
+    mutate(missing_Percentage = (total_Missing / nrow(df)) * 100) %>%
+    arrange(desc(total_Missing))
+}
+
+
+```
+
+
+Run the function in 'merged_data' to get all the necessary aspects of missing values.
+```{r}
+missing_report <- missing_func(merged_data)
+print(missing_report, n = 54)
+
+```
+
+Generating a report in html with all the information of missing data.
+```{r}
+
+kable(missing_report, format = "html", caption = "Missing Data Summary") %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover"))
+
+```
+
+
+# Software
+We used the following software versions to generate this report.
+```{r, info, echo=FALSE}
+sessionInfo()
+```
+
+
